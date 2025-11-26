@@ -12,7 +12,8 @@ const Header = () => {
       </div>
 
       <h1 className='text-4xl max-w-[300]px sm:text-7xl
-      sm:max-w-[590px] mx-auto mt-10 text-center '>Turn text to image,in seconds.</h1>
+      sm:max-w-[590px] mx-auto mt-10 text-center '>Turn text to <span
+      className='text-orange-600'>image</span>, in seconds.</h1>
     </div>
   )
 }
