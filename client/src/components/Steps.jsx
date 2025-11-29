@@ -3,22 +3,31 @@ import { stepsData } from '../assets/assets'
 
 const Steps = () => {
   return (
-    <div>
-      <h1 className='text-3xl sm:text-4xl font-semibold mb-2'>How it Works?</h1>
-      <p className='text-lg text-gray-600 mb-8'>
+    <div className="flex flex-col items-center text-center my-28">
+
+      <h1 className="text-4xl font-semibold mb-2">How it Works?</h1>
+      <p className="text-lg text-gray-600 mb-10">
         Transform Words into Stunning Images
       </p>
 
-      <div>
+      {/* Main container */}
+      <div className="w-full max-w-2xl space-y-6">
+
         {stepsData.map((item, index) => (
-          <div key={index}>
-            <img src={item.icon} alt="" />
-            <div>
-              <h2>{item.title}</h2>
-              <p>{item.description}</p>
-            </div> {/* <-- Missing closing div added here */}
+          <div
+            key={index}
+            className="flex items-center gap-5 bg-white/30 border rounded-xl p-6 shadow-lg 
+            hover:scale-[1.02] transition duration-300 cursor-pointer"
+          >
+            <img src={item.icon} width={40} alt="" />
+
+            <div className="text-left">
+              <h2 className="text-xl font-semibold">{item.title}</h2>
+              <p className="text-gray-600">{item.description}</p>
+            </div>
           </div>
         ))}
+
       </div>
     </div>
   )
