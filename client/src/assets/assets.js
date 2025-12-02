@@ -9,6 +9,7 @@ import sample_img_1 from './sample_img_1.png'
 import sample_img_2 from './sample_img_2.png'
 import profile_img_1 from './profile_img_1.png'
 import profile_img_2 from './profile_img_2.png'
+import profile_img_3 from './profile_img_3.png'
 import step_icon_1 from './step_icon_1.svg'
 import step_icon_2 from './step_icon_2.svg'
 import step_icon_3 from './step_icon_3.svg'
@@ -60,22 +61,22 @@ export const testimonialsData = [
         image:profile_img_1,
         name:'Aman Bohra',
         role:'Graphic Designer',
-        stars:5,
-        text:`I've been using bg.removal for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.`
+        stars:4,
+        text:`I’ve been using it for almost two months now, mainly for my daily work, and it has consistently been easy to use and a big help in my workflow.`
     },
     {
         image:profile_img_2,
         name:'Saurabh Joshi',
         role:'Content Creator',
-        stars:5,
-        text:`I've been using bg.removal for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.`
+        stars:4,
+        text:`I've been using Imaginova primarily for creating thumbnails, and it has been incredibly user-friendly, making my work much easier.`
     },
     {
-        image:profile_img_1,
+        image:profile_img_3,
         name:'Gagan Kainthola',
         role:' Graphic Designer',
         stars:5,
-        text:`I've been using bg.removal for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.`
+        text:`For nearly a half year, this tool has been my go-to tool for Instagram content. It’s incredibly intuitive and has made my work much simpler.`
     },
 ]
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { testimonialsData } from '../assets/assets'   // make sure this is correct
+import { assets, testimonialsData } from '../assets/assets'   // make sure this is correct
 
 const Testimonials = () => {
   return (
@@ -17,8 +17,15 @@ const Testimonials = () => {
             <div>
               <img 
                 src={testimonial.image} alt="" 
-                className='rounded-full w-14'
-              />
+                className='rounded-full w-14'/>
+              <h2>{testimonial.name}</h2>
+              <p>{testimonial.role}</p>
+              <div className='flex mb-4'>
+                {Array(testimonial.stars).fill().map((item , index) =>(
+                  <img key={index} src={assets.rating_star} alt='' />
+                  ))}
+                </div>
+                <p>{testimonial.text}</p>
             </div>
           </div>
         ))}
