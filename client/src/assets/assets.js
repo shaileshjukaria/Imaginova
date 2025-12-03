@@ -62,7 +62,7 @@ export const testimonialsData = [
         name:'Aman Bohra',
         role:'Graphic Designer',
         stars:4,
-        text:`I’ve been using it for almost two months now, mainly for my daily work, and it has consistently been easy to use and a big help in my workflow.`
+        text:`I’ve been using it for almost two months now, for my daily work, and it has consistently been easy to use and a big help in my workflow.`
     },
     {
         image:profile_img_2,
