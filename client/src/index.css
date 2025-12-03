@@ -7,3 +7,7 @@
     font-family: Outfit;
 }
 /* You can add your global styles below */
+.placeholder-color{
+    color: bluesh;
+    font-weight: 500;
+}
