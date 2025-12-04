@@ -1,14 +1,17 @@
-Here is a **professional, clean, modern GitHub README** for your project **Imaginova**, inspired by the video you shared.
-It is structured, visually appealing, and *developer-friendly*.
-
----
-
-# 🌌 **Imaginova — AI Image Generation Platform**
+# <img width="834" height="199" alt="logo" src="https://github.com/user-attachments/assets/a9ac09b3-60cf-4835-aa56-8fa39cabe721" />
+ **Imaginova — AI Image Generation Platform**
 
 Imaginova is a modern AI-powered image generation platform inspired by cutting-edge diffusion models and interactive creative tools.
 It allows users to **generate, customize, upscale, and download AI-generated images** with a clean UI and smooth workflow — all inside a fast full-stack application.
 
+![Image](<img width="1882" height="900" alt="image" src="https://github.com/user-attachments/assets/43c6bfab-9363-489c-8698-90054e9e6020" />
+)
 
+![Image](<img width="1880" height="889" alt="image" src="https://github.com/user-attachments/assets/6f3c2850-5433-40c0-bd51-def799f0da3c" />
+)
+
+![Image](<img width="1867" height="857" alt="image" src="https://github.com/user-attachments/assets/4d4338c8-8a27-4d00-9150-963f0e57d7b7" />
+)
 
 ---
 
@@ -50,7 +53,7 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 
 * React.js / Next.js
 * Tailwind CSS
-* Zustand / Redux 
+* Zustand / Redux
 * Framer Motion animations
 
 ### **Backend**
@@ -64,7 +67,7 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 
 * Stable Diffusion / Flux
 * Replicate / HuggingFace Inference API
-* Custom inference server 
+* Custom inference server
 
 ---
 
@@ -101,13 +104,7 @@ HUGGINGFACE_API_KEY=
 npm run dev
 ```
 
----
 
-## 📸 **Preview**
-
-
-
----
 
 ## 🧩 **Core Modules**
 
