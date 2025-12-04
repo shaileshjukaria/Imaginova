@@ -37,7 +37,7 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 * Fast interaction & optimized rendering
 * Responsive on all screen sizes
 
-### 🔐 Authentication (If added)
+### 🔐 Authentication
 
 * Secure sign-in with JWT
 * User-specific generation history
@@ -50,7 +50,7 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 
 * React.js / Next.js
 * Tailwind CSS
-* Zustand / Redux (if used)
+* Zustand / Redux 
 * Framer Motion animations
 
 ### **Backend**
@@ -64,7 +64,7 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 
 * Stable Diffusion / Flux
 * Replicate / HuggingFace Inference API
-* Custom inference server (if used)
+* Custom inference server 
 
 ---
 
@@ -145,7 +145,7 @@ Stores:
 4. Images processed & stored
 5. UI displays results in gallery
 
-Flowchart diagram (text version):
+Flowchart diagram :
 
 ```
 Prompt → Backend API → AI Model → Image Output → Processor → Database → Frontend Gallery
