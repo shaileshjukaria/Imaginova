@@ -161,7 +161,7 @@ Prompt → Backend API → AI Model → Image Output → Processor → Database 
 
 **Shailesh Jukaria**
 Full Stack Developer | AI + Web Dev
-GitHub: [https://github.com/shaileshjukaria](https://github.com/shaileshjukaria)
+GitHub: [https://github.com/shaileshjukaria](https://shaileshjukaria.netlify.app)
 
 ---
 
