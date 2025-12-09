@@ -10,7 +10,7 @@ const Footer = () => {
 
         <p className='flex-1 border-l border-gray-400 pl-4
         text-sm text-gray-500 max-sm:hidden'> 
-        Copyright @<a href='https://shaileshjukaria.netlify.app/' target='_blank' rel='noopener noreferrer' className='hover:text-gray-700 transition-colors'>ShaileshJukaria</a>   | All rights reserved.</p>
+        Copyright @<a href='' target='_blank' rel='noopener noreferrer' className='hover:text-gray-700 transition-colors'>Shaurya Singh Panwar</a>   | All rights reserved.</p>
 
         <div className='flex gap-2.5'>
             <img src={assets.facebook_icon} alt='' width={35}/>
