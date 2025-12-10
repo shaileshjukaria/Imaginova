@@ -40,7 +40,7 @@ const registerUser = async (req, res) => {
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
+            if (isMatch) {
                 const token = jwt.sign({id: user._id }, process.env.JWT_SECRET)
                 res.json({sucess:true, token , user: {name: user.name}});
 
@@ -54,3 +54,19 @@ const registerUser = async (req, res) => {
 
         }
     }
+
+    const userCredits = async (req, res) => {
+        try {
+            const { userId } = req.body;
+
+            const user = await userModel.findById(userId);
+            res.json({sucess:true, credits: user.creditBalance, 
+                user:{name: user.name}});
+            
+        } catch (error) {
+            console.log(error);
+        res.json({sucess:false, message: error.message  });
+            
+        }
+    }
+    export { registerUser, loginUser , userCredits };
