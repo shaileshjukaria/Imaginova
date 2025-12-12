@@ -60,7 +60,7 @@ const registerUser = async (req, res) => {
             const { userId } = req;
 
             const user = await userModel.findById(userId);
-            res.json({sucess:true, credits: user.creditBalance, 
+            res.json({sucess:true, credits: user.creditBalance || 0, 
                 user:{name: user.name}});
             
         } catch (error) {
