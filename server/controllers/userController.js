@@ -57,7 +57,7 @@ const registerUser = async (req, res) => {
 
     const userCredits = async (req, res) => {
         try {
-            const { userId } = req.body;
+            const { userId } = req;
 
             const user = await userModel.findById(userId);
             res.json({sucess:true, credits: user.creditBalance, 
