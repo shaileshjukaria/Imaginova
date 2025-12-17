@@ -16,7 +16,7 @@ await connectDB();
 app.use('/api/user', userRouter);
 app.use('/api/image', imageRouter);
 app.get('/', (req, res) => 
-    res.send('API is Working'));
+    res.send('API is Working - Imaginova Backend v1.0'));
 
 
 
