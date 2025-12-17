@@ -5,6 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import Result from './pages/Result';
 import BuyCredit from './pages/BuyCredit';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import RefundPolicy from './pages/RefundPolicy';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Login from './components/Login';
@@ -24,6 +27,9 @@ const App = () => {
         <Route path='/' element={<Home/>} />
         <Route path='/result' element={<Result/>} />
         <Route path='/buycredit' element={<BuyCredit/>} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
+        <Route path='/terms-of-service' element={<TermsOfService/>} />
+        <Route path='/refund-policy' element={<RefundPolicy/>} />
       </Routes>
      <Footer/>
     </div>
