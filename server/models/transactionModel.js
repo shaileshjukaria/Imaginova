@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { date } from "yup";
 
 const transactionSchema = new mongoose.Schema({
    userId:
