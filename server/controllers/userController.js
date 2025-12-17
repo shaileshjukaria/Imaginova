@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import razorpay from "razorpay";
 import transactionModel from "../models/transactionModel.js";
+import crypto from "crypto";
 
 const registerUser = async (req, res) => {
     try {
@@ -79,11 +80,12 @@ const registerUser = async (req, res) => {
 
     const paymentRazorpay = async (req, res) => {
         try {
-            const {userId, planId} = req.body;
+            const {planId} = req.body;
+            const userId = req.userId;
 
-            const userData = await userModel.find(userId);
+            const userData = await userModel.findById(userId);
             if(!userId || !planId){
-                return res.json({sucess:false, message: "Missing Details" });
+                return res.json({success:false, message: "Missing Details" });
             }
 
             let credits, plan, amount, date;
@@ -108,7 +110,7 @@ const registerUser = async (req, res) => {
                     break;    
 
                  default:
-                    return res.json({sucess:false, message: "Invalid Plan" });   
+                    return res.json({success:false, message: "Invalid Plan" });   
 
 
             }
@@ -134,15 +136,79 @@ const registerUser = async (req, res) => {
             await razorpayInstance.orders.create(options,(error,order)=>{
                 if(error){
                     console.log(error);
-                    return res.json({sucess:false, message: error });
+                    return res.json({success:false, message: error });
                 }
-                res.json({sucess:true, order });
+                res.json({success:true, order });
                 
         })
 
         } catch (error) {
             console.log(error);
-        res.json({sucess:false, message: error.message  });
+        res.json({success:false, message: error.message  });
         }
     }
-    export { registerUser, loginUser , userCredits, paymentRazorpay };
+
+    const verifyRazorpay = async (req, res) => {
+        try {
+            const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+            const userId = req.userId;
+
+            console.log('Verifying payment:', { razorpay_order_id, razorpay_payment_id, userId });
+
+            if(!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+                return res.json({success:false, message: "Missing payment details"});
+            }
+
+            // Verify signature
+            const sign = razorpay_order_id + "|" + razorpay_payment_id;
+            const expectedSign = crypto
+                .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+                .update(sign.toString())
+                .digest("hex");
+
+            console.log('Signature match:', razorpay_signature === expectedSign);
+
+            if (razorpay_signature === expectedSign) {
+                // Payment is verified
+                const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+                console.log('Order info:', orderInfo);
+                
+                if(orderInfo.status === 'paid') {
+                    // Find the transaction
+                    const transactionData = await transactionModel.findById(orderInfo.receipt);
+                    console.log('Transaction data:', transactionData);
+                    
+                    if(!transactionData) {
+                        return res.json({success:false, message: "Transaction not found"});
+                    }
+
+                    if(transactionData.payment) {
+                        return res.json({success:false, message: "Payment already processed"});
+                    }
+
+                    // Update transaction
+                    transactionData.payment = true;
+                    await transactionData.save();
+
+                    // Update user credits
+                    const userData = await userModel.findById(userId);
+                    const creditBalance = userData.creditBalance + transactionData.credits;
+                    await userModel.findByIdAndUpdate(userId, {creditBalance});
+
+                    console.log('Credits added successfully. New balance:', creditBalance);
+                    res.json({success:true, message: "Credits Added"});
+                } else {
+                    res.json({success:false, message: "Payment not completed"});
+                }
+            } else {
+                res.json({success:false, message: "Invalid signature"});
+            }
+        } catch (error) {
+            console.log('Verify payment error:', error);
+            res.json({success:false, message: error.message});
+        }
+    }
+
+    
+
+    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay };

@@ -90,7 +90,7 @@ const onSubmitHandler = async (e) => {
         </div>
         <p className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password?</p>
 
-        <button className='bg-orange-500 w-full text-white py-2 rounded-full'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
+        <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
 
        {state === 'Login' ? <p className='mt-5 text-center'>Don't have an account? 
             <span className='text-blue-600 cursor-pointer' onClick={() => setState('Sign Up')}> Sign Up</span></p>
