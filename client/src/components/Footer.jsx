@@ -26,7 +26,19 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className='flex gap-4 text-sm text-gray-600 justify-center border-t pt-4'>
+      {/* Company Info & Help Links */}
+      <div className='flex flex-wrap gap-4 text-sm text-gray-600 justify-center border-t border-b py-4'>
+        <Link to='/company-info#about' className='hover:text-orange-500 cursor-pointer transition-colors'>About Us</Link>
+        <span>|</span>
+        <Link to='/company-info#trust' className='hover:text-orange-500 cursor-pointer transition-colors'>Trust Center</Link>
+        <span>|</span>
+        <Link to='/company-info#contact' className='hover:text-orange-500 cursor-pointer transition-colors'>Contact Us</Link>
+        <span>|</span>
+        <Link to='/helpdesk' className='hover:text-orange-500 cursor-pointer transition-colors font-semibold'>Help Desk</Link>
+      </div>
+
+      {/* Policy Links */}
+      <div className='flex gap-4 text-sm text-gray-600 justify-center'>
         <Link to='/privacy-policy' className='hover:text-gray-900 cursor-pointer'>Privacy Policy</Link>
         <span>|</span>
         <Link to='/terms-of-service' className='hover:text-gray-900 cursor-pointer'>Terms of Service</Link>
