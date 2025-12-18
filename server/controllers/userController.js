@@ -34,36 +34,23 @@ const registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Generate verification token
-        const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
         const userData = {
             name,
             username,
             email,
             password: hashedPassword,
-            verificationToken,
-            verificationTokenExpiry,
-            isVerified: false
+            isVerified: true // Auto-verify users
         };
 
         const newUser = new userModel(userData);
         const user = await newUser.save();
 
-        // Send verification email
-        const emailResult = await sendVerificationEmail(email, name, verificationToken);
-        
-        if (!emailResult.success) {
-            // Delete user if email fails to send
-            await userModel.findByIdAndDelete(user._id);
-            return res.json({sucess:false, message: "Failed to send verification email. Please try again." });
-        }
-
+        const token = jwt.sign({id: user._id }, process.env.JWT_SECRET);
         res.json({
             sucess:true, 
-            message: "Registration successful! Please check your email to verify your account.",
-            requiresVerification: true
+            token,
+            user: {name: user.name},
+            message: "Registration successful!"
         });
     } catch (error) {
         console.log(error);
@@ -85,15 +72,6 @@ const registerUser = async (req, res) => {
             
             if (!user) {
                 return res.json({sucess:false, message: "User not found" });
-            }
-
-            // Check if email is verified
-            if (!user.isVerified) {
-                return res.json({
-                    sucess:false, 
-                    message: "Please verify your email before logging in. Check your inbox for the verification link.",
-                    requiresVerification: true
-                });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
