@@ -8,16 +8,27 @@ import { sendVerificationEmail, sendWelcomeEmail } from "../config/email.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, username, email, password } = req.body;
      
-        if (!name || !email || !password) {
+        if (!name || !username || !email || !password) {
             return res.json({sucess:false, message: "All fields are required" });
         }
 
-        // Check if user already exists
-        const existingUser = await userModel.findOne({ email });
-        if (existingUser) {
-            return res.json({sucess:false, message: "User already exists" });
+        // Validate password strength
+        const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            return res.json({sucess:false, message: "Password must be at least 8 characters long and contain at least one special character" });
+        }
+
+        // Check if user already exists with email or username
+        const existingEmail = await userModel.findOne({ email });
+        if (existingEmail) {
+            return res.json({sucess:false, message: "Email already exists" });
+        }
+
+        const existingUsername = await userModel.findOne({ username });
+        if (existingUsername) {
+            return res.json({sucess:false, message: "Username already taken" });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -29,6 +40,7 @@ const registerUser = async (req, res) => {
 
         const userData = {
             name,
+            username,
             email,
             password: hashedPassword,
             verificationToken,
@@ -61,8 +73,16 @@ const registerUser = async (req, res) => {
 
     const loginUser = async (req, res) => {
         try {
-            const { email, password } = req.body;
-            const user = await userModel.findOne({ email });
+            const { emailOrUsername, password } = req.body;
+            
+            // Check if login is with email or username
+            const user = await userModel.findOne({
+                $or: [
+                    { email: emailOrUsername },
+                    { username: emailOrUsername }
+                ]
+            });
+            
             if (!user) {
                 return res.json({sucess:false, message: "User not found" });
             }
@@ -319,4 +339,90 @@ const registerUser = async (req, res) => {
         }
     }
 
-    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay, verifyEmail, resendVerificationEmail };
+    const checkUsernameAvailability = async (req, res) => {
+        try {
+            const { username } = req.query;
+            
+            if (!username) {
+                return res.json({success:false, message: "Username is required" });
+            }
+
+            const existingUser = await userModel.findOne({ username });
+            
+            if (existingUser) {
+                return res.json({success:false, available: false, message: "Username already taken" });
+            }
+
+            res.json({success:true, available: true, message: "Username is available" });
+
+        } catch (error) {
+            console.log(error);
+            res.json({success:false, message: error.message });
+        }
+    }
+
+    const googleAuth = async (req, res) => {
+        try {
+            const { email, name, googleId, profilePicture } = req.body;
+            
+            if (!email || !googleId) {
+                return res.json({sucess:false, message: "Missing required fields" });
+            }
+
+            // Check if user already exists with this Google ID
+            let user = await userModel.findOne({ googleId });
+            
+            if (user) {
+                // User exists, log them in
+                const token = jwt.sign({id: user._id }, process.env.JWT_SECRET);
+                return res.json({sucess:true, token, user: {name: user.name}});
+            }
+
+            // Check if user exists with this email
+            user = await userModel.findOne({ email });
+            
+            if (user) {
+                // Link Google account to existing user
+                user.googleId = googleId;
+                if (profilePicture) user.profilePicture = profilePicture;
+                user.isVerified = true; // Google accounts are pre-verified
+                await user.save();
+                
+                const token = jwt.sign({id: user._id }, process.env.JWT_SECRET);
+                return res.json({sucess:true, token, user: {name: user.name}});
+            }
+
+            // Create new user
+            // Generate unique username from email
+            let username = email.split('@')[0];
+            let usernameExists = await userModel.findOne({ username });
+            let counter = 1;
+            
+            while (usernameExists) {
+                username = `${email.split('@')[0]}${counter}`;
+                usernameExists = await userModel.findOne({ username });
+                counter++;
+            }
+
+            const newUser = new userModel({
+                name,
+                username,
+                email,
+                googleId,
+                profilePicture,
+                isVerified: true, // Google accounts are pre-verified
+                creditBalance: 5
+            });
+
+            await newUser.save();
+            
+            const token = jwt.sign({id: newUser._id }, process.env.JWT_SECRET);
+            res.json({sucess:true, token, user: {name: newUser.name}});
+
+        } catch (error) {
+            console.log(error);
+            res.json({sucess:false, message: error.message });
+        }
+    }
+
+    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay, verifyEmail, resendVerificationEmail, checkUsernameAvailability, googleAuth };
