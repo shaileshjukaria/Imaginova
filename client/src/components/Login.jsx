@@ -282,7 +282,7 @@ const handleGoogleSignIn = async (response) => {
             {state !== 'Login' && passwordValid === false && <span className='text-xs text-red-600'>✗ Weak</span>}
             {state !== 'Login' && passwordValid === true && <span className='text-xs text-green-600'>✓ Strong</span>}
         </div>
-        {state !== 'Login' && <p className='text-xs text-gray-500 px-6 -mt-2'>At least 8 characters with one special character</p>}
+        {state !== 'Login' && <p className='text-xs text-gray-500 px-6 mt-2'>At least 8 characters with one special character</p>}
         <p className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password?</p>
 
         <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
