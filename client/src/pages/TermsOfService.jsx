@@ -39,7 +39,7 @@ const TermsOfService = () => {
 
         <section>
           <h2 className='text-xl font-semibold mb-2'>Contact</h2>
-          <p>For questions about these Terms, contact us at support@imaginova.com</p>
+          <p>For questions about these Terms, contact us at teamshaileshjukaria@outlook.com</p>
         </section>
       </div>
     </div>

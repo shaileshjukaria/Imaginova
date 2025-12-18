@@ -24,7 +24,7 @@ const RefundPolicy = () => {
 
         <section>
           <h2 className='text-xl font-semibold mb-2'>How to Request a Refund</h2>
-          <p>If you believe you qualify for a refund under our exception policy, please contact us at support@imaginova.com within 7 days of purchase with:</p>
+          <p>If you believe you qualify for a refund under our exception policy, please contact us at teamshaileshjukaria@outlook.com within 7 days of purchase with:</p>
           <ul className='list-disc pl-6 space-y-1'>
             <li>Your transaction ID</li>
             <li>Detailed description of the issue</li>
@@ -39,7 +39,7 @@ const RefundPolicy = () => {
 
         <section>
           <h2 className='text-xl font-semibold mb-2'>Contact</h2>
-          <p>For refund inquiries, email us at support@imaginova.com</p>
+          <p>For refund inquiries, email us at teamshaileshjukaria@outlook.com</p>
         </section>
       </div>
     </div>

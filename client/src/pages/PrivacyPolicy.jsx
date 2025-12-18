@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
 
         <section>
           <h2 className='text-xl font-semibold mb-2'>Contact Us</h2>
-          <p>If you have any questions about this Privacy Policy, please contact us at support@imaginova.com</p>
+          <p>If you have any questions about this Privacy Policy, please contact us at teamshaileshjukaria@outlook.com</p>
         </section>
       </div>
     </div>

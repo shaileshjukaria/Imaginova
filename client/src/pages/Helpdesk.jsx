@@ -84,11 +84,11 @@ const Helpdesk = () => {
         },
         {
           q: 'Can I change my email address?',
-          a: 'For security reasons, email address changes require contacting our support team at support@imaginova.com with your account details.'
+          a: 'For security reasons, email address changes require contacting our support team at teamshaileshjukaria@outlook.com with your account details.'
         },
         {
           q: 'How do I delete my account?',
-          a: 'To delete your account, please contact our support team at support@imaginova.com. Please note that this action is irreversible and all your data will be permanently deleted.'
+          a: 'To delete your account, please contact our support team at teamshaileshjukaria@outlook.com. Please note that this action is irreversible and all your data will be permanently deleted.'
         }
       ]
     },
@@ -109,7 +109,7 @@ const Helpdesk = () => {
         },
         {
           q: 'I made a payment but didn\'t receive credits. What now?',
-          a: 'Don\'t worry! Payments can take up to 5 minutes to process. If credits don\'t appear after 10 minutes, contact support@imaginova.com with your transaction ID.'
+          a: 'Don\'t worry! Payments can take up to 5 minutes to process. If credits don\'t appear after 10 minutes, contact teamshaileshjukaria@outlook.com with your transaction ID.'
         }
       ]
     },
@@ -122,7 +122,7 @@ const Helpdesk = () => {
         },
         {
           q: 'Can I get a refund if I\'m not satisfied?',
-          a: 'Yes, if you haven\'t used any credits and it\'s within 7 days of purchase, you can request a full refund by contacting support@imaginova.com with your order details.'
+          a: 'Yes, if you haven\'t used any credits and it\'s within 7 days of purchase, you can request a full refund by contacting teamshaileshjukaria@outlook.com with your order details.'
         },
         {
           q: 'How long do refunds take to process?',
@@ -255,7 +255,7 @@ const Helpdesk = () => {
             <Link to='/company-info#contact' className='bg-white text-orange-500 px-8 py-3 rounded-full hover:bg-orange-50 transition-colors font-semibold'>
               Contact Support
             </Link>
-            <a href='mailto:support@imaginova.com' className='bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-orange-500 transition-colors font-semibold'>
+            <a href='mailto:teamshaileshjukaria@outlook.com' className='bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-orange-500 transition-colors font-semibold'>
               Email Us
             </a>
           </div>

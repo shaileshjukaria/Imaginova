@@ -112,8 +112,8 @@ const CompanyInfo = () => {
                   </div>
                   <div>
                     <h4 className='font-semibold text-gray-800'>Email Support</h4>
-                    <a href='mailto:support@imaginova.com' className='text-orange-500 hover:underline'>
-                      support@imaginova.com
+                    <a href='mailto:teamshaileshjukaria@outlook.com' className='text-orange-500 hover:underline'>
+                      teamshaileshjukaria@outlook.com
                     </a>
                     <p className='text-sm text-gray-600'>Response time: 24-48 hours</p>
                   </div>
