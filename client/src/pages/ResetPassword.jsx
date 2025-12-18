@@ -69,7 +69,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100'>
+    <div className='min-h-screen flex items-center justify-center bg-linear-to-br from-orange-50 to-orange-100'>
       <form onSubmit={handleSubmit} className='bg-white p-10 rounded-xl shadow-lg max-w-md w-full'>
         <h1 className='text-center text-3xl text-neutral-700 font-semibold mb-2'>Reset Password</h1>
         <p className='text-center text-sm text-gray-500 mb-6'>Enter your new password</p>
