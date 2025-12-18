@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import razorpay from "razorpay";
 import transactionModel from "../models/transactionModel.js";
 import crypto from "crypto";
+import { sendVerificationEmail, sendWelcomeEmail } from "../config/email.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -12,27 +13,51 @@ const registerUser = async (req, res) => {
         if (!name || !email || !password) {
             return res.json({sucess:false, message: "All fields are required" });
         }
+
+        // Check if user already exists
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.json({sucess:false, message: "User already exists" });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Generate verification token
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
         const userData = {
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            verificationToken,
+            verificationTokenExpiry,
+            isVerified: false
         };
 
         const newUser = new userModel(userData);
         const user = await newUser.save();
 
-        const token = jwt.sign({id: user._id }, process.env.JWT_SECRET)
+        // Send verification email
+        const emailResult = await sendVerificationEmail(email, name, verificationToken);
+        
+        if (!emailResult.success) {
+            // Delete user if email fails to send
+            await userModel.findByIdAndDelete(user._id);
+            return res.json({sucess:false, message: "Failed to send verification email. Please try again." });
+        }
 
-        res.json({sucess:true, token , user: {name: user.name}});
+        res.json({
+            sucess:true, 
+            message: "Registration successful! Please check your email to verify your account.",
+            requiresVerification: true
+        });
     } catch (error) {
         console.log(error);
         res.json({sucess:false, message: error.message  });
-
-        }
     }
+}
 
     const loginUser = async (req, res) => {
         try {
@@ -40,6 +65,15 @@ const registerUser = async (req, res) => {
             const user = await userModel.findOne({ email });
             if (!user) {
                 return res.json({sucess:false, message: "User not found" });
+            }
+
+            // Check if email is verified
+            if (!user.isVerified) {
+                return res.json({
+                    sucess:false, 
+                    message: "Please verify your email before logging in. Check your inbox for the verification link.",
+                    requiresVerification: true
+                });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
@@ -209,6 +243,80 @@ const registerUser = async (req, res) => {
         }
     }
 
-    
+    const verifyEmail = async (req, res) => {
+        try {
+            const { token } = req.query;
+            
+            if (!token) {
+                return res.json({success:false, message: "Verification token is required" });
+            }
 
-    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay };
+            // Find user with this token
+            const user = await userModel.findOne({ 
+                verificationToken: token,
+                verificationTokenExpiry: { $gt: Date.now() }
+            });
+
+            if (!user) {
+                return res.json({success:false, message: "Invalid or expired verification token" });
+            }
+
+            // Update user as verified
+            user.isVerified = true;
+            user.verificationToken = undefined;
+            user.verificationTokenExpiry = undefined;
+            await user.save();
+
+            // Send welcome email
+            await sendWelcomeEmail(user.email, user.name);
+
+            res.json({success:true, message: "Email verified successfully! You can now login." });
+
+        } catch (error) {
+            console.log(error);
+            res.json({success:false, message: error.message });
+        }
+    }
+
+    const resendVerificationEmail = async (req, res) => {
+        try {
+            const { email } = req.body;
+            
+            if (!email) {
+                return res.json({success:false, message: "Email is required" });
+            }
+
+            const user = await userModel.findOne({ email });
+            
+            if (!user) {
+                return res.json({success:false, message: "User not found" });
+            }
+
+            if (user.isVerified) {
+                return res.json({success:false, message: "Email is already verified" });
+            }
+
+            // Generate new verification token
+            const verificationToken = crypto.randomBytes(32).toString('hex');
+            const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+            user.verificationToken = verificationToken;
+            user.verificationTokenExpiry = verificationTokenExpiry;
+            await user.save();
+
+            // Send verification email
+            const emailResult = await sendVerificationEmail(email, user.name, verificationToken);
+            
+            if (!emailResult.success) {
+                return res.json({success:false, message: "Failed to send verification email. Please try again." });
+            }
+
+            res.json({success:true, message: "Verification email sent! Please check your inbox." });
+
+        } catch (error) {
+            console.log(error);
+            res.json({success:false, message: error.message });
+        }
+    }
+
+    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay, verifyEmail, resendVerificationEmail };

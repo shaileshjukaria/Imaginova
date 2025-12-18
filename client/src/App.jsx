@@ -8,6 +8,7 @@ import BuyCredit from './pages/BuyCredit';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import RefundPolicy from './pages/RefundPolicy';
+import VerifyEmail from './pages/VerifyEmail';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Login from './components/Login';
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/' element={<Home/>} />
         <Route path='/result' element={<Result/>} />
         <Route path='/buycredit' element={<BuyCredit/>} />
+        <Route path='/verify-email' element={<VerifyEmail/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
         <Route path='/terms-of-service' element={<TermsOfService/>} />
         <Route path='/refund-policy' element={<RefundPolicy/>} />

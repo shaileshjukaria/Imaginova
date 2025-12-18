@@ -13,6 +13,20 @@ const { setShowLogin, backendUrl, setToken, setUser } = useContext(AppContext);
 const [name, setName] = useState('');
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
+const [showResend, setShowResend] = useState(false);
+
+const handleResendVerification = async () => {
+    try {
+        const {data} = await axios.post(backendUrl + '/api/user/resend-verification', { email });
+        if(data.success){
+            toast.success(data.message);
+        } else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+}
 
 const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -26,19 +40,29 @@ const onSubmitHandler = async (e) => {
                 setUser(data.user);
                 localStorage.setItem('token', data.token);
                 setShowLogin(false);
+                setShowResend(false);
             }else{
-                toast.error(data.message); 
-
+                toast.error(data.message);
+                // Show resend button if verification is required
+                if(data.requiresVerification){
+                    setShowResend(true);
+                }
             }   
 
         }else{
             const {data} = await axios.post(backendUrl + '/api/user/register', {
                 name, email, password})
             if(data.sucess){
-                setToken(data.token);
-                setUser(data.user);
-                localStorage.setItem('token', data.token);
-                setShowLogin(false);
+                if(data.requiresVerification){
+                    toast.success(data.message);
+                    setShowResend(true);
+                    setState('Login');
+                } else {
+                    setToken(data.token);
+                    setUser(data.user);
+                    localStorage.setItem('token', data.token);
+                    setShowLogin(false);
+                }
             }else{
                 toast.error(data.message); 
 
@@ -92,11 +116,24 @@ const onSubmitHandler = async (e) => {
 
         <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
 
+       {showResend && (
+            <div className='mt-4 text-center'>
+                <p className='text-sm text-gray-600 mb-2'>Didn't receive the email?</p>
+                <button 
+                    type='button'
+                    onClick={handleResendVerification}
+                    className='text-orange-500 text-sm font-medium hover:text-orange-600'
+                >
+                    Resend Verification Email
+                </button>
+            </div>
+       )}
+
        {state === 'Login' ? <p className='mt-5 text-center'>Don't have an account? 
-            <span className='text-blue-600 cursor-pointer' onClick={() => setState('Sign Up')}> Sign Up</span></p>
+            <span className='text-blue-600 cursor-pointer' onClick={() => {setState('Sign Up'); setShowResend(false);}}> Sign Up</span></p>
        :
         <p className='mt-5 text-center'>Already have an account? 
-            <span className='text-blue-600 cursor-pointer' onClick={() => setState('Login')}> Login</span></p>}
+            <span className='text-blue-600 cursor-pointer' onClick={() => {setState('Login'); setShowResend(false);}}> Login</span></p>}
 
             <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt='' className='absolute top-5 right-5 cursor-pointer'/>
 

@@ -37,10 +37,13 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 * Fast interaction & optimized rendering
 * Responsive on all screen sizes
 
-### 🔐 Authentication
+### 🔐 Authentication & Email Verification
 
 * Secure sign-in with JWT
+* **Email verification required** - Only verified emails can login/signup
 * User-specific generation history
+* Password encryption with bcrypt
+* Resend verification email functionality
 
 ---
 
@@ -56,9 +59,11 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 ### **Backend**
 
 * Node.js + Express
-* MongoDB / PostgreSQL
-* Cloudinary / S3 for image storage
-* JWT Auth
+* MongoDB (Mongoose)
+* Razorpay (Payment Integration)
+* Cloudinary / Clipdrop API
+* Nodemailer (Email Service)
+* JWT Auth + bcrypt
 
 ### **AI Model Integration**
 
@@ -85,20 +90,113 @@ npm install
 
 ### **Environment Variables**
 
-Create a `.env` file:
+Create a `.env` file in the `server` directory:
 
+```env
+# MongoDB
+MONGODB_URI=your_mongodb_connection_string
+
+# JWT Secret
+JWT_SECRET=your_jwt_secret_key
+
+# Email Configuration (Gmail)
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-gmail-app-password
+FRONTEND_URL=http://localhost:5173
+
+# Razorpay
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+CURRENCY=INR
+
+# Clipdrop API
+CLIPDROP_API=your_clipdrop_api_key
+
+# Server Port
+PORT=4000
 ```
-MONGO_URI=
-JWT_SECRET=
-CLOUDINARY_KEY=
-CLOUDINARY_SECRET=
-HUGGINGFACE_API_KEY=
-```
+
+#### **Setting Up Gmail for Email Verification:**
+1. Enable 2-Step Verification on your Google Account
+2. Go to [Google Account Security](https://myaccount.google.com/security)
+3. Under "2-Step Verification", find "App passwords"
+4. Generate a new app password for "Mail"
+5. Copy the 16-character password and use it as `EMAIL_PASSWORD`
 
 ### **Run Development Server**
 
+**Server:**
 ```bash
+cd server
+npm install
+npm run server
+```
+
+**Client:**
+```bash
+cd client
+npm install
 npm run dev
+```
+
+The application will be available at:
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:4000`
+
+---
+
+## 📧 **Email Verification System**
+
+### **How It Works**
+
+1. **User Registration**: User signs up with name, email, and password
+2. **Verification Email Sent**: System sends a verification link to the user's email
+3. **Email Verification**: User clicks the link to verify their email address
+4. **Account Activated**: After verification, user can login normally
+
+### **Key Features**
+
+- ✉️ Automated verification emails with branded templates
+- ⏰ Verification links expire after 24 hours
+- 🔄 Resend verification email option
+- 🎉 Welcome email after successful verification
+- 🔒 Cannot login without verified email
+
+### **API Endpoints**
+
+- `POST /api/user/register` - Register new user (sends verification email)
+- `POST /api/user/login` - Login (requires verified email)
+- `GET /api/user/verify-email?token=...` - Verify email address
+- `POST /api/user/resend-verification` - Resend verification email
+
+### **Testing the Email Flow**
+
+1. Register a new user
+2. Check your email inbox for verification link
+3. Click the verification link
+4. You'll be redirected to the verification success page
+5. Now you can login with your verified account
+
+### **Troubleshooting Email Issues**
+
+**Email not sending?**
+- Verify `EMAIL_USER` and `EMAIL_PASSWORD` in `.env`
+- For Gmail, ensure you're using App Password (not regular password)
+- Check that 2-Step Verification is enabled
+- Look for errors in server console
+
+**Verification link not working?**
+- Check that `FRONTEND_URL` matches your client URL
+- Ensure the token hasn't expired (24 hours validity)
+- Verify the route is properly configured
+
+**Existing Users Migration:**
+If you have existing users, mark them as verified by running this in MongoDB:
+```javascript
+db.users.updateMany(
+  { isVerified: { $exists: false } },
+  { $set: { isVerified: true } }
+);
 ```
 
 
