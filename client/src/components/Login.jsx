@@ -35,6 +35,8 @@ const [usernameAvailable, setUsernameAvailable] = useState(null);
 const [checkingUsername, setCheckingUsername] = useState(false);
 const [passwordValid, setPasswordValid] = useState(null);
 const [showPassword, setShowPassword] = useState(false);
+const [showForgotPassword, setShowForgotPassword] = useState(false);
+const [resetEmail, setResetEmail] = useState('');
 
 const checkUsernameAvailability = async (usernameToCheck) => {
     if (!usernameToCheck || usernameToCheck.length < 3) {
@@ -80,6 +82,28 @@ const handlePasswordChange = (e) => {
         setPasswordValid(validatePassword(value));
     } else {
         setPasswordValid(null);
+    }
+}
+
+const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    
+    if (!resetEmail) {
+        toast.error('Please enter your email');
+        return;
+    }
+
+    try {
+        const {data} = await axios.post(backendUrl + '/api/user/forgot-password', { email: resetEmail });
+        if(data.success){
+            toast.success(data.message);
+            setShowForgotPassword(false);
+            setResetEmail('');
+        } else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
     }
 }
 
@@ -208,6 +232,30 @@ const handleGoogleSignIn = async (response) => {
     <div className='fixed top-0 left-0 right-0 bottom-0
     z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center'>
       
+    {showForgotPassword ? (
+        <motion.form onSubmit={handleForgotPassword}
+        initial={{ opacity: 0.2, y: 50 }}
+        transition={{duration:0.3}}
+        whileInView={{opacity:1,y:0}}
+        viewport={{ once: true }}
+        className='relative bg-white p-10 rounded-xl text-slate-500'>
+            <h1 className='text-center text-2xl text-neutral-700 font-medium'>Reset Password</h1>
+            <p className='text-sm mb-4'>Enter your email to receive a password reset link</p>
+
+            <div className='border px-6 py-2 items-center gap-2 rounded-full mt-4'>
+                <img src={assets.email_icon} alt='' />
+                <input onChange={e => setResetEmail(e.target.value)} value={resetEmail} type='email' className='outline-none text-sm' placeholder='Email ID' required />
+            </div>
+
+            <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer mt-4'>Send Reset Link</button>
+
+            <p className='mt-5 text-center'>
+                <span className='text-blue-600 cursor-pointer' onClick={() => setShowForgotPassword(false)}>Back to Login</span>
+            </p>
+
+            <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt='' className='absolute top-5 right-5 cursor-pointer'/>
+        </motion.form>
+    ) : (
     <motion.form onSubmit={onSubmitHandler}
     initial={{ opacity: 0.2, y: 50 }}
     transition={{duration:0.3}}
@@ -257,7 +305,7 @@ const handleGoogleSignIn = async (response) => {
             {state !== 'Login' && passwordValid === true && <span className='text-xs text-green-600'>✓ Strong</span>}
         </div>
         {state !== 'Login' && <p className='text-xs text-gray-500 px-6 mt-2'>At least 8 characters with one special character</p>}
-        <p className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password?</p>
+        {state === 'Login' && <p onClick={() => setShowForgotPassword(true)} className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password?</p>}
 
         <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
 
@@ -282,6 +330,7 @@ const handleGoogleSignIn = async (response) => {
             <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt='' className='absolute top-5 right-5 cursor-pointer'/>
 
     </motion.form>
+    )}
 
     </div>
   ) 

@@ -9,6 +9,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import RefundPolicy from './pages/RefundPolicy';
 import VerifyEmail from './pages/VerifyEmail';
+import ResetPassword from './pages/ResetPassword';
 import CompanyInfo from './pages/CompanyInfo';
 import Helpdesk from './pages/Helpdesk';
 import Navbar from './components/Navbar';
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/result' element={<Result/>} />
         <Route path='/buycredit' element={<BuyCredit/>} />
         <Route path='/verify-email' element={<VerifyEmail/>} />
+        <Route path='/reset-password' element={<ResetPassword/>} />
         <Route path='/company-info' element={<CompanyInfo/>} />
         <Route path='/helpdesk' element={<Helpdesk/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />

@@ -403,4 +403,84 @@ const registerUser = async (req, res) => {
         }
     }
 
-    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay, verifyEmail, resendVerificationEmail, checkUsernameAvailability, googleAuth };
+    const forgotPassword = async (req, res) => {
+        try {
+            const { email } = req.body;
+            
+            if (!email) {
+                return res.json({success:false, message: "Email is required" });
+            }
+
+            const user = await userModel.findOne({ email });
+            
+            if (!user) {
+                return res.json({success:false, message: "No account found with this email" });
+            }
+
+            // Generate reset token
+            const resetToken = crypto.randomBytes(32).toString('hex');
+            const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+            user.verificationToken = resetToken;
+            user.verificationTokenExpiry = resetTokenExpiry;
+            await user.save();
+
+            // Create reset URL
+            const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
+            
+            // For now, just return success (you can implement email sending later)
+            res.json({
+                success:true, 
+                message: `Password reset link: ${resetUrl}. Please copy this link to reset your password.`,
+                resetUrl // Temporary: send URL in response for testing
+            });
+
+        } catch (error) {
+            console.log(error);
+            res.json({success:false, message: error.message });
+        }
+    }
+
+    const resetPassword = async (req, res) => {
+        try {
+            const { token, newPassword } = req.body;
+            
+            if (!token || !newPassword) {
+                return res.json({success:false, message: "Token and new password are required" });
+            }
+
+            // Validate password strength
+            const passwordRegex = /^(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                return res.json({success:false, message: "Password must be at least 8 characters long and contain at least one special character" });
+            }
+
+            // Find user with this token
+            const user = await userModel.findOne({ 
+                verificationToken: token,
+                verificationTokenExpiry: { $gt: Date.now() }
+            });
+
+            if (!user) {
+                return res.json({success:false, message: "Invalid or expired reset token" });
+            }
+
+            // Hash new password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+            // Update password and clear token
+            user.password = hashedPassword;
+            user.verificationToken = undefined;
+            user.verificationTokenExpiry = undefined;
+            await user.save();
+
+            res.json({success:true, message: "Password reset successfully! You can now login with your new password." });
+
+        } catch (error) {
+            console.log(error);
+            res.json({success:false, message: error.message });
+        }
+    }
+
+    export { registerUser, loginUser , userCredits, paymentRazorpay, verifyRazorpay, verifyEmail, resendVerificationEmail, checkUsernameAvailability, googleAuth, forgotPassword, resetPassword };
