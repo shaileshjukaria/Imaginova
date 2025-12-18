@@ -31,7 +31,6 @@ const [username, setUsername] = useState('');
 const [emailOrUsername, setEmailOrUsername] = useState('');
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
-const [showResend, setShowResend] = useState(false);
 const [usernameAvailable, setUsernameAvailable] = useState(null);
 const [checkingUsername, setCheckingUsername] = useState(false);
 const [passwordValid, setPasswordValid] = useState(null);
@@ -84,20 +83,6 @@ const handlePasswordChange = (e) => {
     }
 }
 
-const handleResendVerification = async () => {
-    try {
-        const emailToUse = state === 'Login' ? emailOrUsername : email;
-        const {data} = await axios.post(backendUrl + '/api/user/resend-verification', { email: emailToUse });
-        if(data.success){
-            toast.success(data.message);
-        } else {
-            toast.error(data.message);
-        }
-    } catch (error) {
-        toast.error(error.message);
-    }
-}
-
 const onSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -110,13 +95,8 @@ const onSubmitHandler = async (e) => {
                 setUser(data.user);
                 localStorage.setItem('token', data.token);
                 setShowLogin(false);
-                setShowResend(false);
             }else{
                 toast.error(data.message);
-                // Show resend button if verification is required
-                if(data.requiresVerification){
-                    setShowResend(true);
-                }
             }   
 
         }else{
@@ -133,19 +113,13 @@ const onSubmitHandler = async (e) => {
             const {data} = await axios.post(backendUrl + '/api/user/register', {
                 name, username, email, password})
             if(data.sucess){
-                if(data.requiresVerification){
-                    toast.success(data.message);
-                    setShowResend(true);
-                    setState('Login');
-                } else {
-                    setToken(data.token);
-                    setUser(data.user);
-                    localStorage.setItem('token', data.token);
-                    setShowLogin(false);
-                }
+                setToken(data.token);
+                setUser(data.user);
+                localStorage.setItem('token', data.token);
+                setShowLogin(false);
+                toast.success('Account created successfully!');
             }else{
                 toast.error(data.message); 
-
             }
 
         }
@@ -299,24 +273,11 @@ const handleGoogleSignIn = async (response) => {
         </>
        )}
 
-       {showResend && (
-            <div className='mt-4 text-center'>
-                <p className='text-sm text-gray-600 mb-2'>Didn't receive the email?</p>
-                <button 
-                    type='button'
-                    onClick={handleResendVerification}
-                    className='text-orange-500 text-sm font-medium hover:text-orange-600'
-                >
-                    Resend Verification Email
-                </button>
-            </div>
-       )}
-
        {state === 'Login' ? <p className='mt-5 text-center'>Don't have an account? 
-            <span className='text-blue-600 cursor-pointer' onClick={() => {setState('Sign Up'); setShowResend(false);}}> Sign Up</span></p>
+            <span className='text-blue-600 cursor-pointer' onClick={() => setState('Sign Up')}> Sign Up</span></p>
        :
         <p className='mt-5 text-center'>Already have an account? 
-            <span className='text-blue-600 cursor-pointer' onClick={() => {setState('Login'); setShowResend(false);}}> Login</span></p>}
+            <span className='text-blue-600 cursor-pointer' onClick={() => setState('Login')}> Login</span></p>}
 
             <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt='' className='absolute top-5 right-5 cursor-pointer'/>
 
