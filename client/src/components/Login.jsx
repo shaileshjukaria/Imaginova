@@ -194,24 +194,36 @@ const handleGoogleSignIn = async (response) => {
     useEffect(() => {
     document.body.style.overflow = 'hidden';
     
-    // Initialize Google Sign-In
-    loadGoogleScript().then(() => {
-        if (window.google) {
-            window.google.accounts.id.initialize({
-                client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || '1018816628124-m2uajrkq7e81inh5htvjb8b7kc6m1e6m.apps.googleusercontent.com',
-                callback: handleGoogleSignIn
-            });
-            window.google.accounts.id.renderButton(
-                document.getElementById('googleSignInButton'),
-                { 
-                    theme: 'outline', 
-                    size: 'large',
-                    width: 350,
-                    text: state === 'Login' ? 'signin_with' : 'signup_with'
+    // Initialize Google Sign-In only if client ID is configured
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    
+    if (googleClientId) {
+        loadGoogleScript().then(() => {
+            if (window.google) {
+                try {
+                    window.google.accounts.id.initialize({
+                        client_id: googleClientId,
+                        callback: handleGoogleSignIn
+                    });
+                    
+                    const googleButton = document.getElementById('googleSignInButton');
+                    if (googleButton) {
+                        window.google.accounts.id.renderButton(
+                            googleButton,
+                            { 
+                                theme: 'outline', 
+                                size: 'large',
+                                width: 350,
+                                text: state === 'Login' ? 'signin_with' : 'signup_with'
+                            }
+                        );
+                    }
+                } catch (error) {
+                    console.error('Google Sign-In initialization error:', error);
                 }
-            );
-        }
-    });
+            }
+        });
+    }
     
     return () => {
         document.body.style.overflow = 'unset';
@@ -275,13 +287,17 @@ const handleGoogleSignIn = async (response) => {
 
         <button className='bg-orange-500 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
 
-       <div className='flex items-center gap-2 my-4'>
-            <div className='flex-1 h-px bg-gray-300'></div>
-            <p className='text-xs text-gray-500'>OR</p>
-            <div className='flex-1 h-px bg-gray-300'></div>
-       </div>
+       {import.meta.env.VITE_GOOGLE_CLIENT_ID && (
+        <>
+            <div className='flex items-center gap-2 my-4'>
+                <div className='flex-1 h-px bg-gray-300'></div>
+                <p className='text-xs text-gray-500'>OR</p>
+                <div className='flex-1 h-px bg-gray-300'></div>
+            </div>
 
-       <div id='googleSignInButton' className='flex justify-center'></div>
+            <div id='googleSignInButton' className='flex justify-center'></div>
+        </>
+       )}
 
        {showResend && (
             <div className='mt-4 text-center'>
