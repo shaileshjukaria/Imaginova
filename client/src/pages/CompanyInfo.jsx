@@ -107,7 +107,7 @@ const CompanyInfo = () => {
 
               <div className='space-y-4'>
                 <div className='flex items-start gap-3'>
-                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0'>
+                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0'>
                     <span className='text-orange-500 text-xl'>📧</span>
                   </div>
                   <div>
@@ -120,7 +120,7 @@ const CompanyInfo = () => {
                 </div>
 
                 <div className='flex items-start gap-3'>
-                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0'>
+                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0'>
                     <span className='text-orange-500 text-xl'>💬</span>
                   </div>
                   <div>
@@ -133,7 +133,7 @@ const CompanyInfo = () => {
                 </div>
 
                 <div className='flex items-start gap-3'>
-                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0'>
+                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0'>
                     <span className='text-orange-500 text-xl'>🌐</span>
                   </div>
                   <div>
@@ -155,7 +155,7 @@ const CompanyInfo = () => {
                 </div>
 
                 <div className='flex items-start gap-3'>
-                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0'>
+                  <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0'>
                     <span className='text-orange-500 text-xl'>👨‍💻</span>
                   </div>
                   <div>
@@ -195,7 +195,7 @@ const CompanyInfo = () => {
         </section>
 
         {/* Quick Links */}
-        <section className='bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center'>
+        <section className='bg-linear-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center'>
           <h2 className='text-2xl font-bold mb-4'>Need More Information?</h2>
           <div className='flex flex-wrap justify-center gap-4'>
             <Link to='/privacy-policy' className='bg-white text-orange-500 px-6 py-2 rounded-full hover:bg-orange-50 transition-colors'>

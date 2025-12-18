@@ -177,17 +177,17 @@ const Helpdesk = () => {
 
         {/* Quick Actions */}
         <div className='grid md:grid-cols-3 gap-6 mb-12'>
-          <Link to='/company-info#contact' className='bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
+          <Link to='/company-info#contact' className='bg-linear-to-br from-orange-500 to-orange-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
             <div className='text-4xl mb-3'>📧</div>
             <h3 className='font-bold text-lg mb-2'>Email Support</h3>
             <p className='text-sm opacity-90'>Get help via email</p>
           </Link>
-          <Link to='/company-info#about' className='bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
+          <Link to='/company-info#about' className='bg-linear-to-br from-blue-500 to-blue-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
             <div className='text-4xl mb-3'>ℹ️</div>
             <h3 className='font-bold text-lg mb-2'>About Us</h3>
             <p className='text-sm opacity-90'>Learn about Imaginova</p>
           </Link>
-          <Link to='/company-info#trust' className='bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
+          <Link to='/company-info#trust' className='bg-linear-to-br from-green-500 to-green-600 text-white p-6 rounded-2xl hover:shadow-xl transition-shadow text-center'>
             <div className='text-4xl mb-3'>🔒</div>
             <h3 className='font-bold text-lg mb-2'>Trust Center</h3>
             <p className='text-sm opacity-90'>Security & Privacy</p>
@@ -248,7 +248,7 @@ const Helpdesk = () => {
         </div>
 
         {/* Still Need Help */}
-        <div className='mt-12 bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center'>
+        <div className='mt-12 bg-linear-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center'>
           <h2 className='text-2xl font-bold mb-4'>Still Need Help?</h2>
           <p className='mb-6 opacity-90'>Can't find what you're looking for? Our support team is here to help!</p>
           <div className='flex flex-wrap justify-center gap-4'>
