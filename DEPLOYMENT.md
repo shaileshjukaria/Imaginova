@@ -93,16 +93,28 @@ After adding environment variables, go to Deployments tab and redeploy the lates
 
 ## Step 5: Razorpay Setup
 
-### 5.1 For Testing
-1. Use Test Mode keys in environment variables
-2. Payments will work with test credentials
+> **📘 For detailed Razorpay setup instructions, see [RAZORPAY_SETUP.md](RAZORPAY_SETUP.md)**
 
-### 5.2 For Production
-1. Complete KYC verification on Razorpay
-2. Switch to Live Mode
-3. Get Live API keys
-4. Update environment variables with Live keys
-5. Enable payment methods (UPI, Cards, etc.)
+### Quick Setup
+1. Create account at [razorpay.com](https://razorpay.com)
+2. Get Test/Live API keys from Dashboard
+3. Add keys to environment variables (backend & frontend)
+4. For production: Complete KYC verification
+
+### Environment Variables Required
+**Backend:**
+```env
+RAZORPAY_KEY_ID=rzp_test_xxx  # or rzp_live_xxx
+RAZORPAY_KEY_SECRET=your_secret
+CURRENCY=INR
+```
+
+**Frontend:**
+```env
+VITE_RAZORPAY_KEY_ID=rzp_test_xxx  # or rzp_live_xxx
+```
+
+See [RAZORPAY_SETUP.md](RAZORPAY_SETUP.md) for complete configuration guide.
 
 ## Alternative Backend Deployment Options
 

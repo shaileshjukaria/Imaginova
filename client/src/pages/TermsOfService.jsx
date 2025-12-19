@@ -1,11 +1,12 @@
 import React from 'react'
 
 const TermsOfService = () => {
+  // Accessible at: https://imaginova-ai.vercel.app/terms-of-service
   return (
     <div className='min-h-screen px-4 py-10 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-bold mb-6'>Terms of Service</h1>
       <div className='space-y-4 text-gray-700'>
-        <p className='text-sm text-gray-500'>Last updated: December 17, 2025</p>
+        <p className='text-sm text-gray-500'>Last updated: December 19, 2025</p>
         
         <section>
           <h2 className='text-xl font-semibold mb-2'>Acceptance of Terms</h2>

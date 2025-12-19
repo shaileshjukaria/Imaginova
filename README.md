@@ -73,7 +73,14 @@ It allows users to **generate, customize, upscale, and download AI-generated ima
 
 ---
 
-## 🚀 **Getting Started**
+## � **Documentation**
+
+- **[Deployment Guide](DEPLOYMENT.md)** - Complete guide for deploying to production
+- **[Razorpay Setup Guide](RAZORPAY_SETUP.md)** - Detailed Razorpay integration and configuration
+
+---
+
+## �🚀 **Getting Started**
 
 ### **Clone the Repo**
 
